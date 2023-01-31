@@ -47,10 +47,10 @@ class CommentSpider(Spider):
         解析comment
         """
         item = dict()
-        item['created_at'] = parse_time(data['created_at'])
+        item['createdAt'] = parse_time(data['created_at'])
         item['_id'] = data['id']
-        item['like_counts'] = data['like_counts']
-        item['ip_location'] = data['source']
+        item['likeCounts'] = data['like_counts']
+        item['ipLocation'] = data['source']
         item['content'] = data['text_raw']
-        item['comment_user'] = parse_user_info(data['user'])
+        item['user'] = parse_user_info(data['user']['nickname'])
         return item

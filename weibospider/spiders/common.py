@@ -63,22 +63,8 @@ def parse_user_info(data):
     # 基础信息
     user = {
         "_id": str(data['id']),
-        "avatar_hd": data['avatar_hd'],
-        "nick_name": data['screen_name'],
-        "verified": data['verified'],
+        "nickname": data['screen_name'],
     }
-    # 额外的信息
-    keys = ['description', 'followers_count', 'friends_count', 'statuses_count',
-            'gender', 'location', 'mbrank', 'mbtype', 'credit_score']
-    for key in keys:
-        if key in data:
-            user[key] = data[key]
-    if 'created_at' in data:
-        user['created_at'] = parse_time(data.get('created_at'))
-    if user['verified']:
-        user['verified_type'] = data['verified_type']
-        if 'verified_reason' in data:
-            user['verified_reason'] = data['verified_reason']
     return user
 
 
@@ -89,22 +75,17 @@ def parse_tweet_info(data):
     tweet = {
         "_id": str(data['mid']),
         "mblogid": data['mblogid'],
-        "created_at": parse_time(data['created_at']),
-        "geo": data['geo'],
-        "ip_location": data.get('region_name', None),
-        "reposts_count": data['reposts_count'],
-        "comments_count": data['comments_count'],
-        "attitudes_count": data['attitudes_count'],
-        "source": data['source'],
+        "createdAt": parse_time(data['created_at']),
+        "ipLocation": data.get('region_name', None),
+        "repostsCount": data['reposts_count'],
+        "commentsCount": data['comments_count'],
+        "attitudesCount": data['attitudes_count'],
         "content": data['text_raw'].replace('\u200b', ''),
-        "pic_urls": ["https://wx1.sinaimg.cn/orj960/" + pic_id for pic_id in data.get('pic_ids', [])],
-        "pic_num": data['pic_num'],
         'isLongText': False,
-        "user": parse_user_info(data['user']),
     }
-    if 'page_info' in data and data['page_info'].get('object_type', '') == 'video':
-        tweet['video'] = data['page_info']['media_info']['mp4_720p_mp4']
-    tweet['url'] = f"https://weibo.com/{tweet['user']['_id']}/{tweet['mblogid']}"
+    user = parse_user_info(data['user'])
+    tweet['user'] = user['nickname']
+    tweet['url'] = f"https://weibo.com/{user['_id']}/{tweet['mblogid']}"
     if 'continue_tag' in data and data['isLongText']:
         tweet['isLongText'] = True
     return tweet
