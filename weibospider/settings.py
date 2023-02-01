@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-BOT_NAME = 'spider'
+BOT_NAME = 'weibospider'
 
-SPIDER_MODULES = ['spiders']
+SPIDER_MODULES = ['weibospider.spiders']
 NEWSPIDER_MODULE = 'spiders'
 
 ROBOTSTXT_OBEY = False
@@ -21,10 +21,11 @@ DOWNLOAD_DELAY = 1
 DOWNLOADER_MIDDLEWARES = {
     'scrapy.downloadermiddlewares.cookies.CookiesMiddleware': None,
     'scrapy.downloadermiddlewares.redirect.RedirectMiddleware': None,
-    'middlewares.IPProxyMiddleware': 100,
     'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 101,
+    'weibospider.middlewares.IPProxyMiddleware': 100,
 }
 
 ITEM_PIPELINES = {
-    'pipelines.JsonWriterPipeline': 300,
+    'weibospider.pipelines.RabitMQSenderPipeline': 100,
+    'weibospider.pipelines.JsonWriterPipeline': 300,
 }

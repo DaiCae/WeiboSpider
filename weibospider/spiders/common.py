@@ -76,7 +76,7 @@ def parse_tweet_info(data):
         "_id": str(data['mid']),
         "mblogid": data['mblogid'],
         "createdAt": parse_time(data['created_at']),
-        "ipLocation": data.get('region_name', None),
+        "ipLocation": data.get('region_name', '发布于 未知'),
         "repostsCount": data['reposts_count'],
         "commentsCount": data['comments_count'],
         "attitudesCount": data['attitudes_count'],

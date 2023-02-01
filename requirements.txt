@@ -1,2 +1,6 @@
 Scrapy
 python_dateutil
+Flask
+python-dateutil
+PyYAML
+pika

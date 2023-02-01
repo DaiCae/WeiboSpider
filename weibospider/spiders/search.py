@@ -7,24 +7,31 @@ Created Time: 2022/10/22
 import json
 import re
 from scrapy import Spider, Request
-from spiders.common import parse_tweet_info, parse_long_tweet
+from weibospider.spiders.common import parse_tweet_info, parse_long_tweet
 
 
 class SearchSpider(Spider):
     """
     关键词搜索采集
     """
-    name = "search_spider"
+    name = "search_"
     base_url = "https://s.weibo.com/"
 
-    def start_requests(self):
+    def __init__(self, keywords, start_time, end_time, spider_id, **kwargs):
+        super().__init__(**kwargs)
+        self.keywords = keywords
+        self.start_time = start_time
+        self.end_time = end_time
+        self.name = self.name + self.start_time + "_" + self.end_time + "_" + spider_id
+
+    def start_requests(self, *args, **kwargs):
         """
         爬虫入口
         """
-        # 这里keywords可替换成实际待采集的数据
-        keywords = ['丽江']
-        start_time = "2022-10-01-0"  # 格式为 年-月-日-小时, 2022-10-01-0 表示2022年10月1日0时
-        end_time = "2022-10-07-23"  # 格式为 年-月-日-小时, 2022-10-07-23 表示2022年10月7日23时
+        keywords = self.keywords
+        start_time = self.start_time + "-0"  # 格式为 年-月-日-小时, 2022-10-01-0 表示2022年10月1日0时
+        end_time = self.end_time + "-24"  # 格式为 年-月-日-小时, 2022-10-07-23 表示2022年10月7日23时
+
         is_search_with_specific_time_scope = True  # 是否在指定的时间区间进行推文搜索
         is_sort_by_hot = True  # 是否按照热度排序,默认按照时间排序
         for keyword in keywords:
