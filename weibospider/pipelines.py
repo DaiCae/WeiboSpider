@@ -22,7 +22,7 @@ class JsonWriterPipeline(object):
         处理item
         """
         if not self.file:
-            file_name = spider.name + "_" + '.jsonl'
+            file_name = spider.name + '.jsonl'
             self.file = open(f'output/{file_name}', 'wt', encoding='utf-8')
         item['crawl_time'] = int(time.time())
         line = json.dumps(dict(item), ensure_ascii=False) + "\n"

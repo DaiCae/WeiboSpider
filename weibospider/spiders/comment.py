@@ -8,7 +8,7 @@ Created Time: 2020/4/14
 import json
 from scrapy import Spider
 from scrapy.http import Request
-from weibospider.spiders.common import parse_time, url_to_mid
+from weibospider.spiders.common import parse_user_info,parse_time, url_to_mid
 
 
 class CommentSpider(Spider):
@@ -59,5 +59,4 @@ class CommentSpider(Spider):
         item['content'] = data['text_raw']
         item['user'] = data['user']['screen_name']
         item['mblogid'] = tweet_id
-        print(item)
         return item
